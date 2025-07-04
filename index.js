@@ -1,4 +1,3 @@
-// Flicker effect on links
 const links = document.querySelectorAll('.link');
 links.forEach(link => {
   let flickerTimeout;
@@ -23,9 +22,7 @@ links.forEach(link => {
   });
 });
 
-// Audio playlist logic
 const playlistPlayer = document.getElementById('playlistPlayer');
-const nowPlaying = document.getElementById('nowPlaying');
 
 const songs = ["songs/1.mp3", "songs/2.mp3", "songs/3.mp3", "songs/4.mp3"];
 let currentSong = 0;
@@ -33,9 +30,9 @@ let currentSong = 0;
 function playSong(index) {
   playlistPlayer.src = songs[index];
   playlistPlayer.load();
+  playlistPlayer.volume = 0.3;
   playlistPlayer.play().then(() => {
     console.log(`Playing: ${songs[index]}`);
-    nowPlaying.textContent = `Now playing: ${songs[index].split('/').pop()}`;
   }).catch(err => {
     console.warn('Playback failed:', err);
   });
@@ -46,12 +43,26 @@ playlistPlayer.addEventListener('ended', () => {
   playSong(currentSong);
 });
 
+const overlay = document.getElementById('overlay');
+const mainContent = document.getElementById('mainContent');
+
 function startPlaylist() {
   playSong(currentSong);
+
+  overlay.classList.add('fade-out');
+
+  mainContent.classList.remove('hidden');
+  mainContent.classList.add('fade-in');
+
   window.removeEventListener('click', startPlaylist);
   window.removeEventListener('keydown', startPlaylist);
+
+  overlay.addEventListener('animationend', () => {
+    overlay.style.display = 'none';
+  }, { once: true });
+
   console.log('User interaction detected, playlist started.');
 }
 
-window.addEventListener('click', startPlaylist);
+overlay.addEventListener('click', startPlaylist);
 window.addEventListener('keydown', startPlaylist);
