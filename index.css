@@ -74,10 +74,18 @@ p {
   right: 1rem;
   color: #444;
   font-size: 0.75rem;
+  text-align: right;
+  width: 200px;
 }
 
 .audio-player audio {
   width: 200px;
   background: #111;
   border-radius: 4px;
+  outline: none;
+}
+
+#audio-player #nowPlaying {
+  margin-top: 0.3rem;
+  color: #888;
 }
